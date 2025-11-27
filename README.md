@@ -1,29 +1,50 @@
-# luks-cheatsheet
-Complete LUKS Cheat Sheet for Linux Disk Encryption
+عالی 👌 این دقیقاً همون چیزیه که هم **برای تجربه کاربر عالیه** هم **برای سئو خیلی قوی** ✅
+من کل `README.md` رو **با Table of Contents لینک‌دار در ابتدای فایل** برات بازنویسی کردم.
+
+✅ فقط **این کل متن پایین رو کامل کپی کن و داخل `README.md` پیست کن** و Commit بزن.
+همه لینک‌ها هم به‌درستی به سرفصل‌ها وصل شدن.
+
+---
+
+````md
 # LUKS Cheat Sheet – Complete cryptsetup Guide for Linux Disk Encryption
 
-✅ Full LUKS2 & LUKS1 Guide  
-✅ cryptsetup Commands Explained  
-✅ Password, Keyfile, Header Backup  
-✅ Auto Mount with crypttab & fstab  
-✅ File Based Encryption  
+✅ Full LUKS1 & LUKS2 Guide  
+✅ Complete cryptsetup Commands  
+✅ Password & Keyslot Management  
+✅ Keyfile Authentication  
+✅ LUKS Header Backup & Restore  
+✅ Auto Unlock with crypttab & fstab  
+✅ File-Based Encrypted Containers  
 ✅ LPIC-2 & LPIC-3 Ready  
 
----
-
-## 🔐 What is LUKS?
-LUKS (Linux Unified Key Setup) is the standard disk encryption system for Linux.
-
-This repository provides a **complete, professional, and practical LUKS Cheat Sheet**.
+> This is a complete and professional **LUKS Cheat Sheet** written for Linux system administrators, DevOps engineers, and security students.
 
 ---
 
-## 📂 Download Cheat Sheet
-➡️ [Download LUKS Cheat Sheet](./luks-cheatsheet.md)
+## 📑 Table of Contents
+
+- [What is LUKS?](#-what-is-luks)
+- [Basics & Concepts](#1-basics--concepts)
+- [Installation](#2-installation)
+- [Formatting a Disk with LUKS](#3-formatting-a-disk-with-luks-all-data-erased)
+- [Open & Close](#4-open--close-unlock--lock)
+- [Create Filesystem & Mount](#5-create-filesystem--mount)
+- [Password & Keyslot Management](#6-password--keyslot-management)
+- [Keyfile Authentication](#7-keyfile-authentication)
+- [LUKS Header Backup & Restore](#8-luks-header-backup--restore-critical)
+- [Resize Encrypted Device](#9-resize-encrypted-device)
+- [Status, UUID & Recovery](#10-status-uuid--recovery)
+- [Auto Unlock at Boot](#11-auto-unlock-at-boot-crypttab--fstab)
+- [File-Based LUKS Container](#12-file-based-luks-container)
+- [Suspend & Resume](#13-suspend--resume-ram-lock)
+- [Security Best Practices](#14-security-best-practices)
+- [Author](#-author)
 
 ---
 
 ## 🔍 SEO Keywords
+
 LUKS cheat sheet  
 cryptsetup cheat sheet  
 linux disk encryption  
@@ -31,68 +52,43 @@ luks encryption guide
 luks header backup  
 luks keyfile  
 luks fstab crypttab  
+luks full disk encryption  
+luks tutorial  
 
 ---
 
-## 🌍 Author
-Created by **Mahdi Norouzi**  
-Linux & DevOps Engineer Candidate  
+## 📌 What is LUKS?
+
+**LUKS (Linux Unified Key Setup)** is the standard disk encryption system for Linux.  
+It provides strong encryption at the block-device level and is widely used for:
+
+- Full Disk Encryption (FDE)
+- Encrypted partitions
+- Encrypted USB drives
+- Secure containers
+- Encrypted virtual machines
 
 ---
 
-⭐ If this helped you, give the repo a star!
-
-
-
-
-```md
-# LUKS / cryptsetup – Ultimate Complete Cheat Sheet
-
-> Linux Unified Key Setup – Full-disk and block-device encryption standard on Linux
-
----
-
-## Table of Contents
-
-1. Basics & Concepts  
-2. Installation  
-3. Formatting a Disk with LUKS  
-4. Opening (Unlock) & Closing (Lock)  
-5. Creating a Filesystem  
-6. Password & Keyslot Management  
-7. Keyfile Management  
-8. LUKS Header Backup & Restore  
-9. Resizing Encrypted Devices  
-10. Status, UUID & Troubleshooting  
-11. crypttab & fstab (Auto Mount at Boot)  
-12. File-Based LUKS (Encrypted Container File)  
-13. Suspend & Resume (Memory Lock)  
-14. Security Best Practices  
+# ✅ LUKS / cryptsetup – Ultimate Complete Cheat Sheet
 
 ---
 
 ## 1. Basics & Concepts
 
-- **LUKS** → Linux Unified Key Setup (standard disk encryption layer)
-- **cryptsetup** → Userspace tool to manage LUKS
-- **Block Device Encryption** → Works on `/dev/sdX`, `/dev/nvmeX`, LVM, RAID
-- **Keyslot** → Each password/key stored in a separate slot (0–7 or more)
-- **LUKS1** → Legacy, maximum compatibility
-- **LUKS2** → Modern, more secure, flexible metadata
-- **Mapping Name** → Logical unlocked device under:
-  
-```
-
-/dev/mapper/<name>
-
-````
+- LUKS → Linux disk encryption standard  
+- cryptsetup → LUKS management tool  
+- Block device encryption → `/dev/sdX`, `/dev/nvmeX`, LVM, RAID  
+- Keyslot → Each password stored in a separate slot  
+- LUKS1 → Legacy compatibility  
+- LUKS2 → Modern, secure, flexible metadata  
+- Mapping name → `/dev/mapper/<name>`
 
 ---
 
 ## 2. Installation
 
 ### Debian / Ubuntu / Kali
-
 ```bash
 sudo apt update
 sudo apt install cryptsetup
@@ -110,7 +106,7 @@ sudo dnf install cryptsetup
 sudo pacman -S cryptsetup
 ```
 
-Verify installation:
+Check version:
 
 ```bash
 cryptsetup --version
@@ -118,25 +114,22 @@ cryptsetup --version
 
 ---
 
-## 3. Formatting a Disk with LUKS (DATA WILL BE ERASED)
+## 3. Formatting a Disk with LUKS (ALL DATA ERASED)
 
-### Basic Format (Default = LUKS2 on modern systems)
+### Default (LUKS2)
 
 ```bash
 sudo cryptsetup luksFormat /dev/sdX1
 ```
 
-### Force LUKS Version
+### Force Version
 
 ```bash
-# LUKS2
-sudo cryptsetup luksFormat --type luks2 /dev/sdX1
-
-# LUKS1
 sudo cryptsetup luksFormat --type luks1 /dev/sdX1
+sudo cryptsetup luksFormat --type luks2 /dev/sdX1
 ```
 
-### Custom Cipher & Security Settings
+### Custom Encryption
 
 ```bash
 sudo cryptsetup luksFormat \
@@ -147,23 +140,17 @@ sudo cryptsetup luksFormat \
   /dev/sdX1
 ```
 
-* `aes-xts-plain64` → Recommended disk cipher
-* `key-size 512` → Stronger encryption
-* `iter-time` → PBKDF computation delay (ms)
-
-### Non-Interactive Mode (For Scripts – NOT RECOMMENDED)
+⚠️ Non-interactive (NOT recommended):
 
 ```bash
-echo "MyPassword" | sudo cryptsetup luksFormat /dev/sdX1 -
+echo "password" | sudo cryptsetup luksFormat /dev/sdX1 -
 ```
-
-⚠️ Password may leak via history & process list.
 
 ---
 
-## 4. Opening (Unlock) & Closing (Lock)
+## 4. Open & Close (Unlock / Lock)
 
-### Unlock Encrypted Device
+### Open
 
 ```bash
 sudo cryptsetup open /dev/sdX1 secure
@@ -175,13 +162,13 @@ Result:
 /dev/mapper/secure
 ```
 
-### Close Device
+### Close
 
 ```bash
 sudo cryptsetup close secure
 ```
 
-### Read-Only Mode
+### Read Only
 
 ```bash
 sudo cryptsetup open --readonly /dev/sdX1 secure
@@ -189,17 +176,10 @@ sudo cryptsetup open --readonly /dev/sdX1 secure
 
 ---
 
-## 5. Creating a Filesystem
-
-After unlocking:
+## 5. Create Filesystem & Mount
 
 ```bash
 sudo mkfs.ext4 /dev/mapper/secure
-```
-
-Mount it:
-
-```bash
 sudo mkdir -p /mnt/secure
 sudo mount /dev/mapper/secure /mnt/secure
 ```
@@ -214,31 +194,31 @@ sudo umount /mnt/secure
 
 ## 6. Password & Keyslot Management
 
-### View LUKS Metadata & Keyslots
+View info:
 
 ```bash
 sudo cryptsetup luksDump /dev/sdX1
 ```
 
-### Add New Password
+Add password:
 
 ```bash
 sudo cryptsetup luksAddKey /dev/sdX1
 ```
 
-### Remove Password (By Entering It)
+Remove password:
 
 ```bash
 sudo cryptsetup luksRemoveKey /dev/sdX1
 ```
 
-### Remove Specific Slot
+Remove specific slot:
 
 ```bash
 sudo cryptsetup luksKillSlot /dev/sdX1 1
 ```
 
-### Change Password
+Change password:
 
 ```bash
 sudo cryptsetup luksChangeKey /dev/sdX1
@@ -246,22 +226,22 @@ sudo cryptsetup luksChangeKey /dev/sdX1
 
 ---
 
-## 7. Keyfile Management
+## 7. Keyfile Authentication
 
-### Create a Secure Keyfile
+Create keyfile:
 
 ```bash
 sudo dd if=/dev/urandom of=/root/luks.key bs=64 count=1
 sudo chmod 600 /root/luks.key
 ```
 
-### Add Keyfile to LUKS
+Add keyfile:
 
 ```bash
 sudo cryptsetup luksAddKey /dev/sdX1 /root/luks.key
 ```
 
-### Unlock Using Keyfile
+Unlock with keyfile:
 
 ```bash
 sudo cryptsetup open /dev/sdX1 secure --key-file /root/luks.key
@@ -271,33 +251,33 @@ sudo cryptsetup open /dev/sdX1 secure --key-file /root/luks.key
 
 ## 8. LUKS Header Backup & Restore (CRITICAL)
 
-### Backup Header
+Backup:
 
 ```bash
 sudo cryptsetup luksHeaderBackup /dev/sdX1 \
 --header-backup-file /root/luks-header.img
 ```
 
-### Restore Header (DANGEROUS!)
+Restore:
 
 ```bash
 sudo cryptsetup luksHeaderRestore /dev/sdX1 \
 --header-backup-file /root/luks-header.img
 ```
 
-⚠️ Wrong restore = permanent data loss.
+⚠️ Wrong restore = permanent data loss!
 
 ---
 
-## 9. Resizing Encrypted Device
+## 9. Resize Encrypted Device
 
-### Resize LUKS Mapping
+Resize mapping:
 
 ```bash
 sudo cryptsetup resize secure
 ```
 
-### Resize Filesystem (ext4)
+Resize filesystem:
 
 ```bash
 sudo e2fsck -f /dev/mapper/secure
@@ -306,27 +286,27 @@ sudo resize2fs /dev/mapper/secure
 
 ---
 
-## 10. Status, UUID & Troubleshooting
+## 10. Status, UUID & Recovery
 
-### Device Status
+Status:
 
 ```bash
 sudo cryptsetup status secure
 ```
 
-### LUKS UUID
+LUKS UUID:
 
 ```bash
 sudo cryptsetup luksUUID /dev/sdX1
 ```
 
-### Filesystem UUID
+Filesystem UUID:
 
 ```bash
 sudo blkid /dev/mapper/secure
 ```
 
-### Filesystem Repair
+Repair:
 
 ```bash
 sudo e2fsck -f /dev/mapper/secure
@@ -334,11 +314,9 @@ sudo e2fsck -f /dev/mapper/secure
 
 ---
 
-## 11. crypttab & fstab (Auto Unlock at Boot)
+## 11. Auto Unlock at Boot (crypttab & fstab)
 
 ### /etc/crypttab
-
-Without keyfile:
 
 ```text
 secure UUID=<LUKS_UUID> none luks
@@ -356,7 +334,7 @@ secure UUID=<LUKS_UUID> /root/luks.key luks
 /dev/mapper/secure /mnt/secure ext4 defaults 0 2
 ```
 
-Or using UUID:
+Or with UUID:
 
 ```text
 UUID=<FS_UUID> /mnt/secure ext4 defaults 0 2
@@ -364,34 +342,34 @@ UUID=<FS_UUID> /mnt/secure ext4 defaults 0 2
 
 ---
 
-## 12. File-Based LUKS (Encrypted Container File)
+## 12. File-Based LUKS Container
 
-### Create File
+Create file:
 
 ```bash
 dd if=/dev/urandom of=secure.img bs=1M count=2048
 ```
 
-### Encrypt File
+Encrypt:
 
 ```bash
 sudo cryptsetup luksFormat secure.img
 ```
 
-### Open File
+Open:
 
 ```bash
 sudo cryptsetup open secure.img securefile
 ```
 
-### Create Filesystem
+Create filesystem:
 
 ```bash
 sudo mkfs.ext4 /dev/mapper/securefile
 sudo mount /dev/mapper/securefile /mnt/securefile
 ```
 
-### Close
+Close:
 
 ```bash
 sudo umount /mnt/securefile
@@ -400,15 +378,15 @@ sudo cryptsetup close securefile
 
 ---
 
-## 13. Suspend & Resume (Memory Locking)
+## 13. Suspend & Resume (RAM Lock)
 
-### Suspend Device (RAM Lock)
+Suspend:
 
 ```bash
 sudo cryptsetup luksSuspend secure
 ```
 
-### Resume Device
+Resume:
 
 ```bash
 sudo cryptsetup luksResume secure
@@ -418,18 +396,27 @@ sudo cryptsetup luksResume secure
 
 ## 14. Security Best Practices
 
-* ✅ Always backup LUKS header
-* ✅ Use long passphrases (16+ characters)
-* ✅ Never store keyfile on the same encrypted disk
-* ✅ Encrypt swap partitions
-* ✅ Avoid exposing passwords in shell history
-* ✅ Always test on VM before production
-* ✅ Use LUKS2 for best security
-* ✅ Use AES-XTS-512 cipher
+✅ Always backup LUKS header
+✅ Use strong passwords (16+ characters)
+✅ Never store keyfile on same disk
+✅ Encrypt swap partition
+✅ Avoid passwords in command history
+✅ Always test on VM first
+✅ Prefer LUKS2
+✅ Use AES-XTS-512
 
 ---
 
-✅ End of LUKS Ultimate English Cheat Sheet
+## 👨‍💻 Author
+
+Created by **Mahdi Norouzi**
+Linux Administrator & DevOps Candidate
+
+🌐 Website: [https://netpilot.ir](https://netpilot.ir)
+📂 GitHub: [https://github.com/](https://github.com/)
+
+---
+
+⭐ If this repository helps you, please give it a **star** to support the project!
 
 ```
-
