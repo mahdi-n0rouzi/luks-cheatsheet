@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://netpilot.ir/assest/img/luks-cheet-sheet.png" alt="LUKS Cheat Sheet Banner" width="500" height: 100%;>
+  <img src="https://netpilot.ir/assest/img/luks-cheat-sheet.png" alt="LUKS Cheat Sheet Banner" width="500">
 </p>
 
 <h1 align="center">LUKS Cheat Sheet</h1>
