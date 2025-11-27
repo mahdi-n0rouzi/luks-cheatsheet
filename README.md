@@ -410,5 +410,3 @@ Linux Administrator & DevOps Candidate
 ---
 
 ⭐ If this repository helps you, please give it a **star** to support the project!
-
-```
