@@ -1,11 +1,3 @@
-<p align="center">
-  <img src="https://netpilot.ir/assest/img/luks-cheet-sheet.png" alt="LUKS Cheat Sheet Banner" width="400">
-</p>
-
-<h1 align="center">LUKS Cheat Sheet</h1>
-
-<p align="center">Complete Guide to Linux Disk Encryption with cryptsetup</p>
-
 # LUKS Cheat Sheet – Complete cryptsetup Guide for Linux Disk Encryption
 
 ✅ Full LUKS1 & LUKS2 Guide  
