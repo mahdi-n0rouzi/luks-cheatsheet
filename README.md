@@ -1,3 +1,5 @@
+
+<meta name="google-site-verification" content="tFi1SYSWXPxMxXqYm9CjSdi8CiWB99sRyBsdnKgCU50" />
 # LUKS Cheat Sheet – Complete cryptsetup Guide for Linux Disk Encryption
 
 ✅ Full LUKS1 & LUKS2 Guide  
